@@ -1,0 +1,11 @@
+pam-require (0.6-2) unstable; urgency=low
+
+  * Added Debianstuff to Makefile.am
+
+ -- Andreas Gohr <andi@splitbrain.org>  Thu, 23 Sep 2004 14:18:13 +0200
+
+pam-require (0.6-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Alexander E. Patrakov <patrakov@ums.usu.ru>  Thu, 23 Sep 2004 14:42:44 +0600

@@ -1,0 +1,56 @@
+# this file is based upon the same file in the pam_ldap distribution
+AC_INIT(pam_require.c)
+AC_CANONICAL_SYSTEM
+AC_PREFIX_DEFAULT()
+
+AM_INIT_AUTOMAKE(pam-require, 0.6)
+AM_CONFIG_HEADER(config.h)
+
+AC_PROG_CC
+AC_PROG_INSTALL
+
+CFLAGS="$CFLAGS -I./"
+if test "$ac_cv_prog_gcc" = "yes"; then CFLAGS="$CFLAGS -Wall -fPIC"; fi
+
+case "$target_os" in
+aix*)
+  if test "$ac_cv_prog_gcc" = "yes"; then
+    pam_require_so_LD="/usr/ccs/bin/ld"
+  fi
+  LDFLAGS="$LDFLAGS -Wl,-brtl"
+  pam_require_so_LDFLAGS="-bM:SRE -bnoentry -brtl -lc"
+  TARGET_OS="AIX"
+  ;;
+darwin*)
+  pam_require_so_LDFLAGS="-bundle"
+  ;;
+hpux*)
+  pam_require_so_LD="/bin/ld"
+  pam_require_so_LDFLAGS="-b -dynamic"
+  TARGET_OS="HPUX"
+  ;;
+solaris*)
+  pam_require_so_LD="/usr/ccs/bin/ld"
+  pam_require_so_LDFLAGS="-B dynamic -G -B group -lc"
+  ;;
+linux*)
+  pam_require_so_LDFLAGS="-shared -Wl,-Bdynamic"
+  ;;
+*)
+  pam_require_so_LDFLAGS="-shared"
+  ;;
+esac
+
+AC_SUBST(pam_require_so_LD)
+AC_SUBST(pam_require_so_LDFLAGS)
+
+AM_CONDITIONAL(USE_NATIVE_LINKER, test -n "$pam_require_so_LD")
+AM_CONDITIONAL(EXTENSION_SO, test "$target_os" = "linux" -o "$target_os" = "linux-gnu")
+AM_CONDITIONAL(EXTENSION_1, test "$TARGET_OS" = "HPUX")
+
+AC_CHECK_HEADERS(security/pam_appl.h security/pam_misc.h security/pam_modules.h)
+AC_CHECK_HEADERS(pam/pam_appl.h pam/pam_misc.h pam/pam_modules.h)
+
+AC_CHECK_LIB(pam, main)
+
+AC_OUTPUT(Makefile)

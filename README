@@ -1,0 +1,128 @@
+====== pam_require ======
+
+This is a simple PAM account module. It is meant to be used together
+with other modules! It allows you to require a special user or group
+to access a service.
+
+It's available at http://www.splitbrain.org/go/pam_require
+
+===== Installation =====
+
+You need the pam-devel files to compile it. In Debian do:
+  
+  # apt-get install libpam0g-dev
+
+Compiling and installing __should__ be straight forward:
+
+  $> ./configure
+  $> make    
+  $> su
+  #> make install 
+
+  
+===== Usage =====
+
+The module is an account module only! It has no usage as auth,
+password or session module! 
+
+**Please Note:** The Syntax has changed from Version 0.1
+
+It accepts usernames or groupnames as parameter. Groupnames have to
+be given with a leading @. Just have a look at the examples below:
+
+This requires the user to be in a group called "dialin":
+
+  account    required   pam_unix.so
+  account    required   pam_require.so @dialin
+
+This only allows user "joe" to login:
+  
+  account    required   pam_unix.so
+  account    required   pam_require.so joe
+
+Here either "joe" or members of the "dialin" group may login:
+
+  account    required   pam_unix.so
+  account    required   pam_require.so joe @dialin
+
+Since version 0.3 you may let in everybody __except__ the named group
+or user. This example keeps out members of the lusers group:
+
+  account    required   pam_unix.so
+  account    required   pam_require.so !@lusers
+
+Since version 0.4 you can define users and groups with spaces, just use
+colons instead of the spaces. You should always avoid using spaces in
+usernames and groups but sometimes it is necessary (most times some kind of
+interaction with Microsoft products is involved). The example lets in "Joe
+Schmoe" and members of the "Windows Users" group.
+
+  account    required   pam_unix.so
+  account    required   pam_require.so Joe:Schmoe @Windows:Users
+
+===== Bugs / Known Issues =====
+
+Be careful with the negation (!). All parameters are logically OR'ed together
+so if one statement is true access is granted. A simple example to explain -
+Imagine this line:
+
+  account    required   pam_unix.so
+  account    required   pam_required.so !@lusers !@schmocks
+
+This would let in all users in group schmocks that are not in group lusers.
+To keep out both groups use two lines like this:
+
+  account    required   pam_unix.so
+  account    required   pam_required.so !@lusers
+  account    required   pam_required.so !@schmocks
+
+The module discards all standard parameter which are: debug, no_warn,
+use_first_pass, try_first_pass, use_mapped_pass and expose_account. This means
+two things: First these parameter doesn't change anything in pam_require's
+behavior and second you can't have users with these names.
+
+===== Thanks =====
+
+To Jennifer Vesperman for her very helpful article "Writing PAM Modules"
+at http://linux.oreillynet.com/pub/a/linux/2002/05/02/pam_modules.html
+
+To Jens Chr. Bachem <j.bachem@travco.de> for the negation patch.
+
+To Svein Olav Bjerkeset <svein.bjerkeset@vegvesen.no> for some hints what to
+change for compiling on Solaris.
+
+To Scipio <scipio@freemail.hu> for pointing out some errors in my code.
+
+To Jon Severinsson <jon@severinsson.net> for adding the missing
+primary group membership test
+
+To Alexander E. Patrakov <patrakov@ums.usu.ru> for adding control files
+to build Debian package
+
+===== Feedback =====
+
+I'm always open to suggestions or hints that help me make my C better.
+I'm completely new to the whole autoconf/automake stuff so any tips on
+this are greatly appreciated.
+
+Just contact me at <andi@splitbrain.org> or visit pam_require in
+the DokuWiki at http://www.splitbrain.org/dokuwiki/sw:pam_require
+
+===== License =====
+
+  pam_require - A simple PAM account module
+  Copyright (C) 2003-2004 Andreas Gohr <a.gohr@web.de>
+  
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.

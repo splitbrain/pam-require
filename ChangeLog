@@ -1,0 +1,33 @@
+2004-09-23 - Version 0.6
+
+* Patch by Jon Severinsson <jon@severinsson.net> for correct
+  check on primary group membership
+
+* Debian control files by Alexander E. Patrakov
+  <patrakov@ums.usu.ru> added
+
+2004-08-11 - Version 0.5
+
+* Multiple bugfixes and changes by Svein Olav Bjerkeset
+  <svein.bjerkeset@vegvesen.no> and Scipio <scipio@freemail.hu>
+
+* Switched to autoconf/automake system using some code from
+  pam_ldap
+
+* Successfully compiled (but not tested) on Solaris
+
+2003-11-07 - Version 0.4
+
+* You may specify users and groups with spaces by replacing them
+  with colons. (Useful when authentication is done against a Windows
+  server)
+
+2003-10-09 - Version 0.3
+
+* Patch by Jens Chr. Bachem <j.bachem@travco.de> to let users
+  in who are _not_ in a given group.
+
+2003-03-05 - Version 0.2
+
+* Changed the config syntax - You now can give as much users and
+  groups as you want as parameter. 

@@ -1,0 +1,14 @@
+Source: pam-require
+Section: admin
+Priority: optional
+Maintainer: Andreas Gohr <andi@splitbrain.org>
+Standards-Version: 3.5.8
+Build-Depends: debmake, libpam0g-dev (>= 0.76)
+
+Package: libpam-require
+Architecture: i386
+Depends: ${shlibs:Depends}
+Description: PAM module for checking group membership
+ pam_require is a simple Plugable Authentication Module (PAM) for Linux
+ (and maybe other systems which use PAM). It is an account module that
+ allows you to require a special group or user to access a service.
